@@ -19,6 +19,8 @@
   libsoup_3,
   pango,
   cargo-tauri,
+  copyDesktopItems,
+  makeDesktopItem,
 }: let
   pname = "picoforge";
   version = "0.2.1";
@@ -60,6 +62,7 @@ in
       cargo-tauri.hook
       pkg-config
       wrapGAppsHook4
+      copyDesktopItems
     ];
 
     buildInputs = [
@@ -87,6 +90,21 @@ in
         --replace-fail '"beforeBuildCommand": "deno task build"' '"beforeBuildCommand": ""' \
         --replace-fail '"frontendDist": "../build"' '"frontendDist": "build"'
     '';
+
+    postInstall = ''
+      install -Dm644 ${src}/src-tauri/icons/128x128.png $out/share/icons/hicolor/128x128/apps/picoforge.png
+    '';
+
+    desktopItems = [
+      (makeDesktopItem {
+        name = "picoforge";
+        exec = "picoforge";
+        icon = "picoforge";
+        desktopName = "Picoforge";
+        genericName = "Pico-Fido Commissioning Tool";
+        categories = ["Utility"];
+      })
+    ];
 
     meta = with lib; {
       description = "A commissioning tool for pico-fido firmware based hardware keys";
