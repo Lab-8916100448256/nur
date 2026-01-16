@@ -8,7 +8,7 @@
   glib,
   gtk3,
   webkitgtk_4_1,
-  wrapGAppsHook3,
+  wrapGAppsHook4,
   runCommand,
   udev,
   pcsclite,
@@ -65,7 +65,7 @@ in
     nativeBuildInputs = [
       cargo-tauri.hook
       pkg-config
-      wrapGAppsHook3
+      wrapGAppsHook4
     ];
 
     buildInputs = [
