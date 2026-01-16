@@ -1,19 +1,25 @@
-{ lib
-, fetchFromGitHub
-, rustPlatform
-, buildNpmPackage
-, pkg-config
-, openssl
-, glib
-, gtk3
-, webkitgtk_4_1
-, wrapGAppsHook3
-, runCommand
-, udev
-, pcsclite
-}:
-
-let
+{
+  lib,
+  fetchFromGitHub,
+  rustPlatform,
+  buildNpmPackage,
+  pkg-config,
+  openssl,
+  glib,
+  gtk3,
+  webkitgtk_4_1,
+  wrapGAppsHook3,
+  runCommand,
+  udev,
+  pcsclite,
+  atkmm,
+  eudev,
+  gdk-pixbuf,
+  libgudev,
+  libsoup_3,
+  pango,
+  cargo-tauri,
+}: let
   pname = "picoforge";
   version = "0.2.0";
 
@@ -34,11 +40,11 @@ let
     pname = "${pname}-frontend";
     src = srcWithLock;
     inherit version;
-    
+
     npmDepsHash = "sha256-aZPvkkwJMBN3IAp9NuSqAQNqqmNeQSkbR4gqON48ccQ=";
 
     makeCacheWritable = true;
-    
+
     installPhase = ''
       runHook preInstall
 
@@ -49,41 +55,49 @@ let
     '';
   };
 in
-rustPlatform.buildRustPackage {
-  inherit pname version src;
+  rustPlatform.buildRustPackage {
+    inherit pname version src;
 
-  sourceRoot = "${src.name}/src-tauri";
+    sourceRoot = "${src.name}/src-tauri";
 
-  cargoHash = "sha256-+2TKSA0otct5KYiSy5hP0ZH8WlhM/Wr8ibwMVE5pcpo=";
+    cargoHash = "sha256-+2TKSA0otct5KYiSy5hP0ZH8WlhM/Wr8ibwMVE5pcpo=";
 
-  nativeBuildInputs = [
-    pkg-config
-    wrapGAppsHook3
-  ];
+    nativeBuildInputs = [
+      cargo-tauri.hook
+      pkg-config
+      wrapGAppsHook3
+    ];
 
-  buildInputs = [
-    openssl
-    glib
-    gtk3
-    webkitgtk_4_1
-    udev
-    pcsclite
-  ];
+    buildInputs = [
+      openssl
+      glib
+      gtk3
+      webkitgtk_4_1
+      udev
+      pcsclite
 
-  # Copy frontend assets and disable tauri's build command
-  postPatch = ''
-    mkdir -p build
-    cp -r ${frontend}/* build/
-    
-    substituteInPlace tauri.conf.json \
-      --replace-fail '"beforeBuildCommand": "deno task build"' '"beforeBuildCommand": ""' \
-      --replace-fail '"frontendDist": "../build"' '"frontendDist": "build"'
-  '';
+      atkmm
+      eudev
+      gdk-pixbuf
+      libgudev
+      libsoup_3
+      pango
+    ];
 
-  meta = with lib; {
-    description = "A commissioning tool for pico-fido firmware based hardware keys";
-    homepage = "https://github.com/librekeys/picoforge";
-    license = licenses.mit;
-    mainProgram = "picoforge";
-  };
-}
+    # Copy frontend assets and disable tauri's build command
+    postPatch = ''
+      mkdir -p build
+      cp -r ${frontend}/* build/
+
+      substituteInPlace tauri.conf.json \
+        --replace-fail '"beforeBuildCommand": "deno task build"' '"beforeBuildCommand": ""' \
+        --replace-fail '"frontendDist": "../build"' '"frontendDist": "build"'
+    '';
+
+    meta = with lib; {
+      description = "A commissioning tool for pico-fido firmware based hardware keys";
+      homepage = "https://github.com/librekeys/picoforge";
+      license = licenses.mit;
+      mainProgram = "picoforge";
+    };
+  }
