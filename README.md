@@ -1,8 +1,8 @@
-# nur-packages-template
+# Lab-8916100448256 nur packages
 
-**A template for [NUR](https://github.com/nix-community/NUR) repositories**
+**This is my personal [NUR](https://github.com/nix-community/NUR) repository**
 
-## Setup
+## Setup your own NUR repository
 
 1. Click on [Use this template](https://github.com/nix-community/nur-packages-template/generate) to start a repo based on this template. (Do _not_ fork it.)
 2. Add your packages to the [pkgs](./pkgs) directory and to
@@ -19,15 +19,32 @@
    the rest
 6. [Add yourself to NUR](https://github.com/nix-community/NUR#how-to-add-your-own-repository)
 
-## README template
 
-# nur-packages
+## Notes to self
+### Update flake.lock
+Remember to `nix flake update` from times to times  
 
-**My personal [NUR](https://github.com/nix-community/NUR) repository**
+### How to build a package from a local checkout
+`nix-build -A <package-name>`  
 
-<!-- Remove this if you don't use github actions -->
+### How to build a package from github
+`nix build 'github:Lab-8916100448256/nur#package-name'`  
+or to directly run an apllication :  
+`nix run 'github:Lab-8916100448256/nur#package-name'`  
+
+### How to use the NUR on NixOS
+Add this to configuration.nix :  
+```
+  nixpkgs.config.packageOverrides = pkgs: {
+    nur = import (builtins.fetchTarball "https://github.com/Lab-8916100448256/nur/archive/main.tar.gz") {
+      inherit pkgs;
+    };
+  };
+```
+
+<!-- Remove this if you don't use github actions 
 ![Build and populate cache](https://github.com/<YOUR-GITHUB-USER>/nur-packages/workflows/Build%20and%20populate%20cache/badge.svg)
-
+-->
 <!--
 Uncomment this if you use travis:
 
