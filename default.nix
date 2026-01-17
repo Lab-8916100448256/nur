@@ -14,8 +14,8 @@
   modules = import ./modules; # NixOS modules
   overlays = import ./overlays; # nixpkgs overlays
 
-  example-package = pkgs.callPackage ./pkgs/example-package { };
   picoforge = pkgs.callPackage ./pkgs/picoforge { };
-  # some-qt5-package = pkgs.libsForQt5.callPackage ./pkgs/some-qt5-package { };
-  # ...
+  subplot = pkgs.callPackage ./pkgs/subplot { };
+  ambient-ci = pkgs.callPackage ./pkgs/ambient-ci { };
+  radicle-ci-ambient = pkgs.callPackage ./pkgs/radicle-ci-ambient { };
 }
