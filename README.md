@@ -32,8 +32,8 @@ Remember to `nix flake update` from times to times
 or to directly run an apllication :  
 `nix run 'github:Lab-8916100448256/nur#package-name'`  
 
-### How to use the NUR on NixOS
-Add this to configuration.nix :  
+### How to use this NUR on NixOS
+Add this in /etc/nixos/configuration.nix :  
 ```
   nixpkgs.config.packageOverrides = pkgs: {
     nur = import (builtins.fetchTarball "https://github.com/Lab-8916100448256/nur/archive/main.tar.gz") {
@@ -42,13 +42,26 @@ Add this to configuration.nix :
   };
 ```
 
-<!-- Remove this if you don't use github actions 
+To use it with nix-shell add this to `~/.config/nixpkgs/config.nix` :  
+```
+{
+  packageOverrides = pkgs: {
+    nur = import (builtins.fetchTarball "https://github.com/Lab-8916100448256/nur/archive/main.tar.gz") {
+      inherit pkgs;
+    };
+  };
+}
+```
+
+<!-- Uncomment this if you use github actions 
 ![Build and populate cache](https://github.com/<YOUR-GITHUB-USER>/nur-packages/workflows/Build%20and%20populate%20cache/badge.svg)
 -->
-<!--
-Uncomment this if you use travis:
 
+<!-- Uncomment this if you use travis:
 [![Build Status](https://travis-ci.com/<YOUR_TRAVIS_USERNAME>/nur-packages.svg?branch=master)](https://travis-ci.com/<YOUR_TRAVIS_USERNAME>/nur-packages)
 -->
+
+<!-- Uncomment this if you use cachix:
 [![Cachix Cache](https://img.shields.io/badge/cachix-<YOUR_CACHIX_CACHE_NAME>-blue.svg)](https://<YOUR_CACHIX_CACHE_NAME>.cachix.org)
+-->
 
