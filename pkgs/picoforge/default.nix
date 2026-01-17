@@ -12,12 +12,6 @@
   runCommand,
   udev,
   pcsclite,
-  atkmm,
-  eudev,
-  gdk-pixbuf,
-  libgudev,
-  libsoup_3,
-  pango,
   cargo-tauri,
   copyDesktopItems,
   makeDesktopItem,
@@ -36,26 +30,19 @@
     pname = "${pname}-frontend";
     src = src;
     inherit version;
-
     npmDepsHash = "sha256-7DLooiGLzk3JRsKAftOxSf7HAgHBXCJDaAFp2p/pryc=";
-
     makeCacheWritable = true;
-
     installPhase = ''
       runHook preInstall
-
       mkdir -p $out
       cp -r build/* $out/
-
       runHook postInstall
     '';
   };
 in
   rustPlatform.buildRustPackage {
     inherit pname version src;
-
     sourceRoot = "${src.name}/src-tauri";
-
     cargoHash = "sha256-nLf8v4MIt2zAeA9YMVaoI3s/yut5/Jy2fGM3Sx33EJc=";
 
     nativeBuildInputs = [
@@ -72,20 +59,11 @@ in
       webkitgtk_4_1
       udev
       pcsclite
-
-      atkmm
-      eudev
-      gdk-pixbuf
-      libgudev
-      libsoup_3
-      pango
     ];
 
-    # Copy frontend assets and disable tauri's build command
     postPatch = ''
       mkdir -p build
       cp -r ${frontend}/* build/
-
       substituteInPlace tauri.conf.json \
         --replace-fail '"beforeBuildCommand": "deno task build"' '"beforeBuildCommand": ""' \
         --replace-fail '"frontendDist": "../build"' '"frontendDist": "build"'
