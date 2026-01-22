@@ -23,7 +23,7 @@
     owner = "librekeys";
     repo = "picoforge";
     rev = "v${version}";
-    sha256 = "1lvg1j92222x333qj7s3yi4n33z1bd7scv171i7p12f3f04zql3d";
+    sha256 = "13wnbzby5s9v9rbp1lyy9jzx07s63q1fx4649qa5wdz95hf0d9fv";
   };
 
   frontend = buildNpmPackage {
@@ -43,7 +43,7 @@ in
   rustPlatform.buildRustPackage {
     inherit pname version src;
     sourceRoot = "${src.name}/src-tauri";
-    cargoHash = "sha256-nLf8v4MIt2zAeA9YMVaoI3s/yut5/Jy2fGM3Sx33EJc=";
+    cargoHash = "sha256-DB54egPebUniP/yjEZc+/AY9vOChJRBA+tqnbISmEgg=";
 
     nativeBuildInputs = [
       cargo-tauri.hook

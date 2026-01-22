@@ -53,6 +53,14 @@ To use it with nix-shell add this to `~/.config/nixpkgs/config.nix` :
 }
 ```
 
+### How to update the version of a package
+#### Update the version in the package
+expl : `sed -i '/version = "0.2.0"/version = "0.3.0"/' pkgs/picoforge/default.nix`
+#### Prefetch the git repo to get the hash of the new version
+expl : `nix-prefetch-git   --url https://github.com/librekeys/picoforge --rev "v0.3.0"`
+#### Try to build the package and update the other hashes if they have changed
+expl : `nix-build -A picoforge` then if build fails update the hashes that have changed
+
 <!-- Uncomment this if you use github actions 
 ![Build and populate cache](https://github.com/<YOUR-GITHUB-USER>/nur-packages/workflows/Build%20and%20populate%20cache/badge.svg)
 -->
